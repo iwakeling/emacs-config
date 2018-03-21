@@ -18,75 +18,102 @@
     (call-interactively 'compile)))
 
 (global-set-key (kbd "M-g b") 'compile-in-makefile-directory)
-(global-set-key (kbd "M-g d") 'gud-gdb)
-(global-set-key (kbd "M-g g") 'goto-line)
 (global-set-key (kbd "M-g c") 'capitalize-dwim)
+(global-set-key (kbd "M-g d") 'gdb)
+(global-set-key (kbd "M-g g") 'goto-line)
+(global-set-key (kbd "M-g m") 'magit-status)
 (global-set-key (kbd "M-g s") 'ispell-buffer)
 
-;; if not using exwm, this is useful
-;; exwm version below
-;; TODO: get the expanded version from work
-;; (global-set-key (kbd "<C-tab>") 'other-window)
+(add-to-list 'load-path "~/.emacs.d/lisp")
 
-(require 'exwm)
-(require 'exwm-config)
-(require 'exwm-randr)
-(exwm-config-default)
-(exwm-randr-enable)
-(ido-mode nil)
-(setq exwm-workspace-number 5)
-(ansi-term "/bin/bash")
+(defun use-exwm ()
+      (require 'exwm)
+      (require 'exwm-config)
+      (require 'exwm-randr)
+      (exwm-config-default)
+      (exwm-randr-enable)
+      (ido-mode nil)
+      (setq exwm-workspace-number 5)
+      (ansi-term "/bin/bash")
 
-(exwm-input-set-key (kbd "<s-tab>") 'switch-to-buffer)
-(exwm-input-set-key (kbd "<s-iso-lefttab>") 'previous-buffer)
-(exwm-input-set-key (kbd "<C-tab>") 'other-window)
-(exwm-input-set-key (kbd "s-p")
-                    (lambda (command)
-                      (interactive (list (read-shell-command "$ ")))
-                      (start-process-shell-command command nil command)))
-(exwm-input-set-key (kbd "<XF86AudioRaiseVolume>")
-		    (lambda ()
-		      (interactive)
-		      (start-process-shell-command "pactl" nil "pactl set-sink-volume 0 +5%")))
-(exwm-input-set-key (kbd "<XF86AudioLowerVolume>")
-		    (lambda ()
-		      (interactive)
-		      (start-process-shell-command "pactl" nil "pactl set-sink-volume 0 -5%")))
-(exwm-input-set-key (kbd "<XF86AudioMute>")
-		    (lambda ()
-		      (interactive)
-		      (start-process-shell-command "pactl" nil "pactl set-sink-mute 0 toggle")))
-(exwm-input-set-key (kbd "<XF86Display>")
-		    (lambda ()
-		      (interactive)
-		      (start-process-shell-command "xrandr" nil "/home/ian/bin/toggle-external-display")))
+      (exwm-input-set-key (kbd "<s-tab>") 'switch-to-buffer)
+      (exwm-input-set-key (kbd "<s-iso-lefttab>") 'previous-buffer)
+      (exwm-input-set-key (kbd "<C-tab>") 'next-multiframe-window)
+      (exwm-input-set-key (kbd "<C-S-tab>") 'previous-multiframe-window)
+      (exwm-input-set-key (kbd "s-p")
+                          (lambda (command)
+                            (interactive (list (read-shell-command "$ ")))
+                            (start-process-shell-command command nil command)))
+      (exwm-input-set-key (kbd "<XF86AudioRaiseVolume>")
+                          (lambda ()
+                            (interactive)
+                            (start-process-shell-command "pactl" nil "pactl set-sink-volume 0 +5%")))
+      (exwm-input-set-key (kbd "<XF86AudioLowerVolume>")
+                          (lambda ()
+                            (interactive)
+                            (start-process-shell-command "pactl" nil "pactl set-sink-volume 0 -5%")))
+      (exwm-input-set-key (kbd "<XF86AudioMute>")
+                          (lambda ()
+                            (interactive)
+                            (start-process-shell-command "pactl" nil "pactl set-sink-mute 0 toggle")))
+      (exwm-input-set-key (kbd "<XF86Display>")
+                          (lambda ()
+                            (interactive)
+                            (start-process-shell-command "xrandr" nil "/home/ian/bin/toggle-external-display")))
 
-(add-hook 'exwm-randr-screen-change-hook
-		    (lambda ()
-		      (interactive)
-		      (start-process-shell-command "xrandr" nil "/home/ian/bin/toggle-external-display")))
+      (add-hook 'exwm-randr-screen-change-hook
+                (lambda ()
+                  (interactive)
+                  (start-process-shell-command "xrandr" nil "/home/ian/bin/toggle-external-display")))
 
-;; TODO: assign workspaces to displays, e.g.
-;; (setq exwm-randr-workspace-output-plist '(1 "LVDS1"))
-;; perhaps using "s-!", "s-\"" etc
+      ;; TODO: assign workspaces to displays, e.g.
+      ;; (setq exwm-randr-workspace-output-plist '(1 "LVDS1"))
+      ;; perhaps using "s-!", "s-\"" etc
 
-;; Workspace assignments for X window buffers
-(require 'subr-x)  ;; Because of when-let
+      ;; Workspace assignments for X window buffers
+      (require 'subr-x)  ;; Because of when-let
 
-(defvar exwm-workspace-window-assignments
-  '(("Firefox" . 3)
-    ("Thunderbird" . 4))
-  "An alist of window classes and which workspace to put them on.")
+      (defvar exwm-workspace-window-assignments
+        '(("Firefox" . 3)
+          ("Thunderbird" . 4))
+        "An alist of window classes and which workspace to put them on.")
 
-(add-hook 'exwm-manage-finish-hook
-          (lambda ()
-            (when-let ((target (cdr (assoc exwm-class-name exwm-workspace-window-assignments))))
-		      (exwm-workspace-move-window target)
-		      (exwm-input-toggle-keyboard))))
+      (add-hook 'exwm-manage-finish-hook
+                (lambda ()
+                  (when-let ((target (cdr (assoc exwm-class-name exwm-workspace-window-assignments))))
+                            (exwm-workspace-move-window target)
+                            (exwm-input-toggle-keyboard))))
 
-(add-hook 'exwm-manage-finish-hook
-	  (lambda ()
-	    (if (eq exwm-class-name "okular") (exwm-input-toggle-keyboard))))
+      (add-hook 'exwm-manage-finish-hook
+                (lambda ()
+                  (if (eq exwm-class-name "okular") (exwm-input-toggle-keyboard)))))
+
+
+(if (eq window-system 'x)
+    (use-exwm)
+  (progn
+    (global-set-key (kbd "<C-tab>") 'next-multiframe-window)
+    (global-set-key (kbd "<C-S-tab>") 'previous-multiframe-window)))
+
+;; the go tools in particular rely on a lot of things being on the path
+(require 'exec-path-from-shell)
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
+
+(defun revert-all-buffers ()
+  "Refreshes all open buffers from their respective files."
+  (interactive)
+  (dolist (buf (buffer-list))
+    (with-current-buffer buf
+      (when (and (buffer-file-name) (file-exists-p (buffer-file-name)) (not (buffer-modified-p)))
+        (revert-buffer t t t))))
+  (message "Refreshed open files."))
+
+(defun gofmt-go-mode-buffers ()
+  (when (eq major-mode 'go-mode)
+    (gofmt-before-save)))
+
+(add-hook 'before-save-hook 'gofmt-go-mode-buffers)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -96,6 +123,7 @@
  '(battery-mode-line-format " [%B %t rem] ")
  '(c-basic-offset 2)
  '(column-number-mode t)
+ '(cua-enable-cua-keys t)
  '(cua-mode t nil (cua-base))
  '(custom-buffer-indent 2)
  '(custom-enabled-themes (quote (wombat)))
@@ -108,7 +136,7 @@
     (("gnu" . "http://elpa.gnu.org/packages/")
      ("melpa-stable" . "https://stable.melpa.org/packages/")
      ("marmalade" . "https://marmalade-repo.org/packages/"))))
- '(package-selected-packages (quote (exwm magit)))
+ '(package-selected-packages (quote (exec-path-from-shell exwm magit)))
  '(python-indent-offset 2)
  '(show-paren-mode t)
  '(standard-indent 2)
