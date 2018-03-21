@@ -26,6 +26,10 @@
 
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
+(defun other-window-backward ()
+  (interactive)
+  (other-window -1))
+
 (defun use-exwm ()
       (require 'exwm)
       (require 'exwm-config)
@@ -38,8 +42,9 @@
 
       (exwm-input-set-key (kbd "<s-tab>") 'switch-to-buffer)
       (exwm-input-set-key (kbd "<s-iso-lefttab>") 'previous-buffer)
-      (exwm-input-set-key (kbd "<C-tab>") 'next-multiframe-window)
-      (exwm-input-set-key (kbd "<C-S-tab>") 'previous-multiframe-window)
+      (exwm-input-set-key (kbd "<C-tab>") 'other-window)
+      (exwm-input-set-key (kbd "<C-iso-lefttab>") 'other-window-backward)
+      (exwm-input-set-key (kbd "<C-S-tab>") 'other-window-backward)
       (exwm-input-set-key (kbd "s-p")
                           (lambda (command)
                             (interactive (list (read-shell-command "$ ")))
@@ -92,8 +97,8 @@
 (if (eq window-system 'x)
     (use-exwm)
   (progn
-    (global-set-key (kbd "<C-tab>") 'next-multiframe-window)
-    (global-set-key (kbd "<C-S-tab>") 'previous-multiframe-window)))
+    (global-set-key (kbd "<C-tab>") 'other-window)
+    (global-set-key (kbd "<C-S-tab>") 'other-window-backward)))
 
 ;; the go tools in particular rely on a lot of things being on the path
 (require 'exec-path-from-shell)
