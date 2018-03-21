@@ -120,6 +120,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
  '(battery-mode-line-format " [%B %t rem] ")
  '(c-basic-offset 2)
  '(column-number-mode t)
@@ -127,6 +129,9 @@
  '(cua-mode t nil (cua-base))
  '(custom-buffer-indent 2)
  '(custom-enabled-themes (quote (wombat)))
+ '(custom-safe-themes
+   (quote
+    ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(display-battery-mode t)
  '(display-time-mode t)
  '(doc-view-continuous t)
@@ -136,7 +141,7 @@
     (("gnu" . "http://elpa.gnu.org/packages/")
      ("melpa-stable" . "https://stable.melpa.org/packages/")
      ("marmalade" . "https://marmalade-repo.org/packages/"))))
- '(package-selected-packages (quote (exec-path-from-shell exwm magit)))
+ '(package-selected-packages (quote (solarized-theme exec-path-from-shell exwm magit)))
  '(python-indent-offset 2)
  '(show-paren-mode t)
  '(standard-indent 2)
