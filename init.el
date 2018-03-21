@@ -66,11 +66,6 @@
                             (interactive)
                             (start-process-shell-command "xrandr" nil "/home/ian/bin/toggle-external-display")))
 
-      (add-hook 'exwm-randr-screen-change-hook
-                (lambda ()
-                  (interactive)
-                  (start-process-shell-command "xrandr" nil "/home/ian/bin/toggle-external-display")))
-
       ;; TODO: assign workspaces to displays, e.g.
       ;; (setq exwm-randr-workspace-output-plist '(1 "LVDS1"))
       ;; perhaps using "s-!", "s-\"" etc
