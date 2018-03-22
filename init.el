@@ -142,6 +142,7 @@
  '(display-battery-mode t)
  '(display-time-mode t)
  '(doc-view-continuous t)
+ '(js-indent-level 2)
  '(latex-run-command "pdflatex")
  '(package-archives
    (quote
