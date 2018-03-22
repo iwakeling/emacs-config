@@ -145,6 +145,7 @@
  '(python-indent-offset 2)
  '(show-paren-mode t)
  '(standard-indent 2)
+ '(tab-width 2)
  '(visible-bell t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
