@@ -89,6 +89,13 @@
                   (if (eq exwm-class-name "okular") (exwm-input-toggle-keyboard)))))
 
 
+;; on Macs, home and end go to the beginning and end of the file by default
+;; so make them behave as expected
+(if (eq window-system 'ns)
+		(progn
+			(define-key global-map [home] 'move-beginning-of-line)
+			(define-key global-map [end] 'move-end-of-line)))
+
 (if (eq window-system 'x)
     (use-exwm)
   (progn
