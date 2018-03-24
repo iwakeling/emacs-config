@@ -61,14 +61,9 @@
                           (lambda ()
                             (interactive)
                             (start-process-shell-command "pactl" nil "pactl set-sink-mute 0 toggle")))
-      (exwm-input-set-key (kbd "<XF86Display>")
-                          (lambda ()
-                            (interactive)
-                            (start-process-shell-command "xrandr" nil "/home/ian/bin/toggle-external-display")))
 
-      ;; TODO: assign workspaces to displays, e.g.
-      ;; (setq exwm-randr-workspace-output-plist '(1 "LVDS1"))
-      ;; perhaps using "s-!", "s-\"" etc
+      (require 'exwm-randr-control)
+      (exwm-randr-control-init)
 
       ;; Workspace assignments for X window buffers
       (require 'subr-x)  ;; Because of when-let
@@ -81,8 +76,8 @@
       (add-hook 'exwm-manage-finish-hook
                 (lambda ()
                   (when-let ((target (cdr (assoc exwm-class-name exwm-workspace-window-assignments))))
-                            (exwm-workspace-move-window target)
-                            (exwm-input-toggle-keyboard))))
+		    (exwm-workspace-move-window target)
+		    (exwm-input-toggle-keyboard))))
 
       (add-hook 'exwm-manage-finish-hook
                 (lambda ()
