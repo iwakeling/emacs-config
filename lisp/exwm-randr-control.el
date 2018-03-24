@@ -3,11 +3,31 @@
 (defvar exwm-randr-control-state 'off
   "current state of xrandr")
 
-(defvar exwm-randr-base-display "LVDS1"
+(defvar exwm-randr-control-base-display "LVDS1"
   "the base display to arrange other displays relative to")
 
 (defun exwm-randr-control-init ()
-  (exwm-input-set-key (kbd "<XF86Display>") 'exwm-randr-control-maybe-toggle))
+  ;; exwm-randr-workspace-ouput-plist has to be initialised to something
+  ;; or plist-put doesn't work
+  (setq exwm-randr-workspace-output-plist '(0 exwm-randr-control-base-display))
+  (exwm-input-set-key (kbd "<XF86Display>") 'exwm-randr-control-maybe-toggle)
+  (exwm-input-set-key (kbd "s-)")
+		      (lambda ()
+			(interactive)
+			(exwm-randr-control-move-workspace-to-display
+			 exwm-randr-control-base-display)))
+  (exwm-input-set-key (kbd "s-!")
+		      (lambda ()
+			(interactive)
+			(exwm-randr-control-move-workspace-to-nth-display 0)))
+  (exwm-input-set-key (kbd "s-\"")
+		      (lambda ()
+			(interactive)
+			(exwm-randr-control-move-workspace-to-nth-display 1)))
+  (exwm-input-set-key (kbd "s-£")
+		      (lambda ()
+			(interactive)
+			(exwm-randr-control-move-workspace-to-nth-display 2)))  )
 
 (defun exwm-randr-control-maybe-toggle ()
   (interactive)
@@ -21,7 +41,7 @@
 	(state-machine '((off . mirrored)
 			 (mirrored . split)
 			 (split . off)))
-	(prev-display exwm-randr-base-display))
+	(prev-display exwm-randr-control-base-display))
     (dolist (display active-displays)
       (cond ((eq exwm-randr-control-state 'off)
 	     (exwm-randr-control-mirror-display display))
@@ -40,7 +60,7 @@
       (matches ()))
     (while (string-match "^\\(.*\\) connected" display-data pos)
       (let ((display (match-string 1 display-data)))
-	(unless (equal display exwm-randr-base-display)
+	(unless (equal display exwm-randr-control-base-display)
 	    (push display matches)))
     (setq pos (match-end 0)))
   (setq matches (reverse matches))))
@@ -49,7 +69,7 @@
   (shell-command-to-string
    (format "xrandr --output %s --auto --same-as %s"
 	   display
-	   exwm-randr-base-display)))
+	   exwm-randr-control-base-display)))
 
 (defun exwm-randr-control-split-display (display prev-display)
   (shell-command-to-string
@@ -59,3 +79,18 @@
   (shell-command-to-string
    (format "xrandr --output %s --off" display)))
 
+(defun exwm-randr-control-move-workspace-to-nth-display (n)
+  (if (eq exwm-randr-control-state 'split)
+      (let ((active-displays (exwm-randr-get-active-displays)))
+	(exwm-randr-control-move-workspace-to-display
+	 (nth n active-displays)))
+    (message "xrandr state is not split")))
+
+(defun exwm-randr-control-move-workspace-to-display (display)
+  (message "putting workspace %s on display %s"
+	   exwm-workspace-current-index
+	   display)
+  (plist-put exwm-randr-workspace-output-plist
+	     exwm-workspace-current-index
+	     display)
+  (exwm-randr--refresh))
