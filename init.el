@@ -144,7 +144,7 @@
     (("gnu" . "http://elpa.gnu.org/packages/")
      ("melpa-stable" . "https://stable.melpa.org/packages/")
      ("marmalade" . "https://marmalade-repo.org/packages/"))))
- '(package-selected-packages (quote (solarized-theme exec-path-from-shell exwm magit)))
+ '(package-selected-packages (quote (markdown-mode solarized-theme exec-path-from-shell exwm magit)))
  '(pop-up-windows nil)
  '(python-indent-offset 2)
  '(show-paren-mode t)
