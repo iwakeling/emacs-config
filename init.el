@@ -14,7 +14,7 @@
 (defun compile-in-makefile-directory ()
   (interactive)
   (let ((default-directory
-	  (locate-dominating-file (buffer-file-name) "Makefile")))
+    (locate-dominating-file (buffer-file-name) "Makefile")))
     (call-interactively 'compile)))
 
 (global-set-key (kbd "M-g b") 'compile-in-makefile-directory)
@@ -25,6 +25,11 @@
 (global-set-key (kbd "M-g s") 'ispell-buffer)
 
 (add-to-list 'load-path "~/.emacs.d/lisp")
+
+(require 'whitespace)
+(setq whitespace-style (face tabs trailing space-after-tab space-before-tab empty))
+(setq whitespace-global-modes '(not go-mode))
+(global-whitespace-mode t)
 
 (defun other-window-backward ()
   (interactive)
@@ -76,8 +81,8 @@
       (add-hook 'exwm-manage-finish-hook
                 (lambda ()
                   (when-let ((target (cdr (assoc exwm-class-name exwm-workspace-window-assignments))))
-		    (exwm-workspace-move-window target)
-		    (exwm-input-toggle-keyboard))))
+        (exwm-workspace-move-window target)
+        (exwm-input-toggle-keyboard))))
 
       (add-hook 'exwm-manage-finish-hook
                 (lambda ()
@@ -87,9 +92,9 @@
 ;; on Macs, home and end go to the beginning and end of the file by default
 ;; so make them behave as expected
 (if (eq window-system 'ns)
-		(progn
-			(define-key global-map [home] 'move-beginning-of-line)
-			(define-key global-map [end] 'move-end-of-line)))
+    (progn
+      (define-key global-map [home] 'move-beginning-of-line)
+      (define-key global-map [end] 'move-end-of-line)))
 
 (if (eq window-system 'x)
     (use-exwm)
