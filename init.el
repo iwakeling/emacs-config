@@ -27,9 +27,15 @@
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
 (require 'whitespace)
-(setq whitespace-style (face tabs trailing space-after-tab space-before-tab empty))
+(setq whitespace-style '(face tabs trailing space-after-tab space-before-tab empty))
 (setq whitespace-global-modes '(not go-mode))
 (global-whitespace-mode t)
+
+;; sadly I sometimes have to edit java
+(add-hook 'java-mode-hook
+          (lambda ()
+            (setq c-basic-offset 4
+                  tab-width 4)))
 
 (defun other-window-backward ()
   (interactive)
@@ -142,6 +148,7 @@
  '(display-battery-mode t)
  '(display-time-mode t)
  '(doc-view-continuous t)
+ '(indent-tabs-mode nil)
  '(js-indent-level 2)
  '(latex-run-command "pdflatex")
  '(package-archives
