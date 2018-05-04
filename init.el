@@ -53,9 +53,6 @@
 
       (exwm-input-set-key (kbd "<s-tab>") 'switch-to-buffer)
       (exwm-input-set-key (kbd "<s-iso-lefttab>") 'previous-buffer)
-      (exwm-input-set-key (kbd "<C-tab>") 'other-window)
-      (exwm-input-set-key (kbd "<C-iso-lefttab>") 'other-window-backward)
-      (exwm-input-set-key (kbd "<C-S-tab>") 'other-window-backward)
       (exwm-input-set-key (kbd "s-p")
                           (lambda (command)
                             (interactive (list (read-shell-command "$ ")))
@@ -103,10 +100,12 @@
       (define-key global-map [end] 'move-end-of-line)))
 
 (if (eq window-system 'x)
-    (use-exwm)
-  (progn
-    (global-set-key (kbd "<C-tab>") 'other-window)
-    (global-set-key (kbd "<C-S-tab>") 'other-window-backward)))
+    (use-exwm))
+
+(require 'bind-key)
+(bind-key* "<C-tab>" 'other-window)
+(bind-key* "<C-S-tab>" 'other-window-backward)
+(bind-key* "<C-iso-lefttab>" 'other-window-backward)
 
 ;; the go tools in particular rely on a lot of things being on the path
 (require 'exec-path-from-shell)
@@ -156,7 +155,9 @@
     (("gnu" . "http://elpa.gnu.org/packages/")
      ("melpa-stable" . "https://stable.melpa.org/packages/")
      ("marmalade" . "https://marmalade-repo.org/packages/"))))
- '(package-selected-packages (quote (markdown-mode solarized-theme exec-path-from-shell exwm magit)))
+ '(package-selected-packages
+   (quote
+    (bind-key exwm go-mode markdown-mode solarized-theme exec-path-from-shell magit)))
  '(pop-up-windows nil)
  '(python-indent-offset 2)
  '(show-paren-mode t)
