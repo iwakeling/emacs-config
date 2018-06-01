@@ -41,6 +41,18 @@
   (interactive)
   (other-window -1))
 
+(defun exwm-workspace-next ()
+  (interactive)
+  (let ((next-index (mod (+ exwm-workspace-current-index 1)
+                         (+ exwm-workspace-number 1))))
+    (exwm-workspace-switch next-index)))
+
+(defun exwm-workspace-prev ()
+  (interactive)
+  (let ((prev-index (mod (- exwm-workspace-current-index 1)
+                         (+ exwm-workspace-number 1))))
+    (exwm-workspace-switch prev-index)))
+
 (defun use-exwm ()
       (require 'exwm)
       (require 'exwm-config)
@@ -51,8 +63,8 @@
       (setq exwm-workspace-number 5)
       (ansi-term "/bin/bash")
 
-      (exwm-input-set-key (kbd "<s-tab>") 'switch-to-buffer)
-      (exwm-input-set-key (kbd "<s-iso-lefttab>") 'previous-buffer)
+      (exwm-input-set-key (kbd "<s-tab>") 'exwm-workspace-next)
+      (exwm-input-set-key (kbd "<s-iso-lefttab>") 'exwm-workspace-prev)
       (exwm-input-set-key (kbd "s-p")
                           (lambda (command)
                             (interactive (list (read-shell-command "$ ")))
