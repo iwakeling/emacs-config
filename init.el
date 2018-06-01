@@ -119,11 +119,6 @@
 (bind-key* "<C-S-tab>" 'other-window-backward)
 (bind-key* "<C-iso-lefttab>" 'other-window-backward)
 
-;; the go tools in particular rely on a lot of things being on the path
-(require 'exec-path-from-shell)
-(when (memq window-system '(mac ns x))
-  (exec-path-from-shell-initialize))
-
 (defun revert-all-buffers ()
   "Refreshes all open buffers from their respective files."
   (interactive)
@@ -133,11 +128,21 @@
         (revert-buffer t t t))))
   (message "Refreshed open files."))
 
+;; the go tools in particular rely on a lot of things being on the path
+(require 'exec-path-from-shell)
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
+
 (defun gofmt-go-mode-buffers ()
   (when (eq major-mode 'go-mode)
     (gofmt-before-save)))
 
 (add-hook 'before-save-hook 'gofmt-go-mode-buffers)
+
+(add-hook 'go-mode-hook
+          (lambda ()
+            (local-set-key (kbd "M-.") 'godef-jump)
+            (local-set-key (kbd "M-*") 'pop-tag-mark)))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -169,7 +174,7 @@
      ("marmalade" . "https://marmalade-repo.org/packages/"))))
  '(package-selected-packages
    (quote
-    (bind-key exwm go-mode markdown-mode solarized-theme exec-path-from-shell magit)))
+    (go-dlv bind-key exwm go-mode markdown-mode solarized-theme exec-path-from-shell magit)))
  '(pop-up-windows nil)
  '(python-indent-offset 2)
  '(show-paren-mode t)
