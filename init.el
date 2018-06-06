@@ -24,12 +24,12 @@
 (global-set-key (kbd "M-g m") 'magit-status)
 (global-set-key (kbd "M-g s") 'ispell-buffer)
 
-(add-to-list 'load-path "~/.emacs.d/lisp")
-
 (require 'whitespace)
 (setq whitespace-style '(face tabs trailing space-after-tab space-before-tab empty))
 (setq whitespace-global-modes '(not go-mode))
 (global-whitespace-mode t)
+
+(setq org-replace-disputed-keys t)
 
 ;; sadly I sometimes have to edit java
 (add-hook 'java-mode-hook
