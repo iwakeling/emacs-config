@@ -160,10 +160,14 @@
  '(custom-enabled-themes (quote (wombat)))
  '(custom-safe-themes
    (quote
-    ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+    ("1d9401cbf6d663adc797e83917b1a3d1cf916990acb75d11679546bc7dfd9153" "31086c59cd60bef4d9ea4997caa79ade74139abe92b05c2cc30095bb62150189" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+ '(delete-selection-mode t)
  '(display-battery-mode t)
  '(display-time-mode t)
  '(doc-view-continuous t)
+ '(exec-path
+   (quote
+    ("/Users/iwakeling/bin/" "/usr/local/bin/" "/usr/bin/" "/bin/" "/usr/sbin/" "/sbin/" "/Library/TeX/texbin/" "/usr/local/go/bin/" "/opt/X11/bin/" "/usr/local/go/bin/" "/Applications/Emacs.app/Contents/MacOS/libexec/")))
  '(indent-tabs-mode nil)
  '(js-indent-level 2)
  '(latex-run-command "pdflatex")
@@ -174,7 +178,7 @@
      ("marmalade" . "https://marmalade-repo.org/packages/"))))
  '(package-selected-packages
    (quote
-    (go-dlv bind-key exwm go-mode markdown-mode solarized-theme exec-path-from-shell magit)))
+    (bind-key exwm go-mode markdown-mode solarized-theme exec-path-from-shell magit)))
  '(pop-up-windows nil)
  '(python-indent-offset 2)
  '(show-paren-mode t)
