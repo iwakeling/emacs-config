@@ -171,6 +171,7 @@
  '(indent-tabs-mode nil)
  '(js-indent-level 2)
  '(latex-run-command "pdflatex")
+ '(org-support-shift-select (quote always))
  '(package-archives
    (quote
     (("gnu" . "http://elpa.gnu.org/packages/")
