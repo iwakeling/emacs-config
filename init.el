@@ -24,6 +24,11 @@
 (global-set-key (kbd "M-g m") 'magit-status)
 (global-set-key (kbd "M-g s") 'ispell-buffer)
 
+(require 'bind-key)
+(bind-key* "<C-tab>" 'other-window)
+(bind-key* "<C-S-tab>" 'other-window-backward)
+(bind-key* "<C-iso-lefttab>" 'other-window-backward)
+
 (require 'whitespace)
 (setq whitespace-style '(face tabs trailing space-after-tab space-before-tab empty))
 (setq whitespace-global-modes '(not go-mode))
@@ -81,6 +86,8 @@
                           (lambda ()
                             (interactive)
                             (start-process-shell-command "pactl" nil "pactl set-sink-mute 0 toggle")))
+      (exwm-input-set-key (kbd "s-`") 'exwm-workspace-switch-to-buffer)
+      (exwm-input-set-key (kbd "s-=") 'exwm-workspace-move-window)
 
       (require 'exwm-randr-control)
       (exwm-randr-control-init)
@@ -113,11 +120,6 @@
 
 (if (eq window-system 'x)
     (use-exwm))
-
-(require 'bind-key)
-(bind-key* "<C-tab>" 'other-window)
-(bind-key* "<C-S-tab>" 'other-window-backward)
-(bind-key* "<C-iso-lefttab>" 'other-window-backward)
 
 (defun revert-all-buffers ()
   "Refreshes all open buffers from their respective files."
@@ -165,9 +167,6 @@
  '(display-battery-mode t)
  '(display-time-mode t)
  '(doc-view-continuous t)
- '(exec-path
-   (quote
-    ("/Users/iwakeling/bin/" "/usr/local/bin/" "/usr/bin/" "/bin/" "/usr/sbin/" "/sbin/" "/Library/TeX/texbin/" "/usr/local/go/bin/" "/opt/X11/bin/" "/usr/local/go/bin/" "/Applications/Emacs.app/Contents/MacOS/libexec/")))
  '(indent-tabs-mode nil)
  '(js-indent-level 2)
  '(latex-run-command "pdflatex")
