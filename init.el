@@ -71,7 +71,7 @@
       (exwm-config-default)
       (exwm-randr-enable)
       (ido-mode nil)
-      (setq exwm-workspace-number 5)
+      (setq exwm-workspace-number 6)
       (ansi-term "/bin/bash")
 
       (exwm-input-set-key (kbd "<s-tab>") 'exwm-workspace-next)
@@ -92,6 +92,14 @@
                           (lambda ()
                             (interactive)
                             (start-process-shell-command "pactl" nil "pactl set-sink-mute 0 toggle")))
+      (exwm-input-set-key (kbd "<XF86AudioMicMute>")
+                          (lambda ()
+                            (interactive)
+                            (start-process-shell-command "pactl" nil "pactl set-source-mute 1 toggle")))
+      (exwm-input-set-key (kbd "<s-f12>")
+                          (lambda ()
+                            (interactive)
+                            (start-process-shell-command "systemctl" nil "systemctl suspend")))
       (exwm-input-set-key (kbd "s-`") 'exwm-workspace-switch-to-buffer)
       (exwm-input-set-key (kbd "s-=") 'exwm-workspace-move-window)
 
@@ -104,6 +112,7 @@
       (defvar exwm-workspace-window-assignments
         '(("Firefox" . 3)
           ("Thunderbird" . 4))
+          ;; ("Slack" . 5)) ;; try commenting this out to see if it makes notifications work.
         "An alist of window classes and which workspace to put them on.")
 
       (add-hook 'exwm-manage-finish-hook
@@ -184,7 +193,7 @@
      ("marmalade" . "https://marmalade-repo.org/packages/"))))
  '(package-selected-packages
    (quote
-    (bind-key exwm go-mode markdown-mode solarized-theme exec-path-from-shell magit)))
+    (go-dlv bind-key exwm go-mode markdown-mode solarized-theme exec-path-from-shell magit)))
  '(pop-up-windows nil)
  '(python-indent-offset 2)
  '(show-paren-mode t)
@@ -196,5 +205,5 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#242424" :foreground "#f6f3e8" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 108 :width normal :foundry "PfEd" :family "DejaVu Sans Mono"))))
+ '(default ((t (:inherit nil :stipple nil :background "#242424" :foreground "#f6f3e8" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "PfEd" :family "DejaVu Sans Mono"))))
  '(isearch ((t (:background "gainsboro" :foreground "#857b6f")))))
