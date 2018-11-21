@@ -111,8 +111,8 @@
 
       (defvar exwm-workspace-window-assignments
         '(("Firefox" . 3)
-          ("Thunderbird" . 4))
-          ;; ("Slack" . 5)) ;; try commenting this out to see if it makes notifications work.
+          ("Thunderbird" . 4)
+          ("Slack" . 5))
         "An alist of window classes and which workspace to put them on.")
 
       (add-hook 'exwm-manage-finish-hook
@@ -193,7 +193,7 @@
      ("marmalade" . "https://marmalade-repo.org/packages/"))))
  '(package-selected-packages
    (quote
-    (go-dlv bind-key exwm go-mode markdown-mode solarized-theme exec-path-from-shell magit)))
+    (dockerfile-mode yaml-mode go-dlv bind-key exwm go-mode markdown-mode solarized-theme exec-path-from-shell magit)))
  '(pop-up-windows nil)
  '(python-indent-offset 2)
  '(show-paren-mode t)
