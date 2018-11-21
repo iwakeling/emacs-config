@@ -12,7 +12,7 @@
                 (inline-open . 0)       ; Guessed value
                 (statement . 0)         ; Guessed value
                 (statement-block-intro . +) ; Guessed value
-                (statement-cont . 2)    ; Guessed value
+                (statement-cont . 0)    ; Guessed value
                 (substatement-open . 0) ; Guessed value
                 (topmost-intro . 0)     ; Guessed value
                 (access-label . -)
