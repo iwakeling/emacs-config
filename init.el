@@ -19,7 +19,7 @@
 
 (global-set-key (kbd "M-g b") 'compile-in-makefile-directory)
 (global-set-key (kbd "M-g c") 'capitalize-dwim)
-(global-set-key (kbd "M-g d") 'gdb)
+(global-set-key (kbd "M-g d") 'gud-gdb)
 (global-set-key (kbd "M-g g") 'goto-line)
 (global-set-key (kbd "M-g m") 'magit-status)
 (global-set-key (kbd "M-g s") 'ispell-buffer)
