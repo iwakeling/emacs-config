@@ -180,4 +180,9 @@
       (setq pos (match-end 0)))
     (let ((connected-displays (exwm-randr-control-get-connected-displays display-data)))
       (if (equal (length connected-displays) 0)
-          (message "all displays disconnected, xrandr state now off")))))
+          (progn
+            ;; clear the output setup so things don't appear immediately next
+            ;; time a display is plugged in
+            (setq exwm-randr-workspace-output-plist '(0 exwm-randr-control-base-display))
+            (exwm-randr--refresh)
+            (message "all displays disconnected, xrandr state now off"))))))
