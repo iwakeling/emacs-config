@@ -11,6 +11,9 @@
 (autoload 'scad-mode "scad-mode" "A major mode for editing OpenSCAD code." t)
 (add-to-list 'auto-mode-alist '("\\.scad$" . scad-mode))
 
+(autoload 'arduino-mode "arduino-mode" "Arduino editing mode." t)
+(add-to-list 'auto-mode-alist '("\\.ino$" . arduino-mode))
+
 (defun compile-in-makefile-directory ()
   (interactive)
   (let ((default-directory
@@ -47,6 +50,9 @@
           (lambda ()
             (setq c-basic-offset 4
                   tab-width 4)))
+
+(server-start)
+(cua-mode)
 
 (defun other-window-backward ()
   (interactive)
@@ -134,7 +140,10 @@
       (define-key global-map [end] 'move-end-of-line)))
 
 (if (eq window-system 'x)
-    (use-exwm))
+    (progn
+      (use-exwm)
+      (require 'org-freedesktop-notifications-server)
+      (ofns-start)))
 
 (defun revert-all-buffers ()
   "Refreshes all open buffers from their respective files."
@@ -171,8 +180,6 @@
  '(battery-mode-line-format " [%B %t rem] ")
  '(c-basic-offset 2)
  '(column-number-mode t)
- '(cua-enable-cua-keys t)
- '(cua-mode t nil (cua-base))
  '(custom-buffer-indent 2)
  '(custom-enabled-themes (quote (wombat)))
  '(custom-safe-themes
@@ -196,6 +203,7 @@
     (dockerfile-mode yaml-mode go-dlv bind-key exwm go-mode markdown-mode solarized-theme exec-path-from-shell magit)))
  '(pop-up-windows nil)
  '(python-indent-offset 2)
+ '(scroll-preserve-screen-position t)
  '(show-paren-mode t)
  '(standard-indent 2)
  '(tab-width 2)
