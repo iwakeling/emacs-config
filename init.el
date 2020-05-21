@@ -26,6 +26,7 @@
 (global-set-key (kbd "M-g g") 'goto-line)
 (global-set-key (kbd "M-g m") 'magit-status)
 (global-set-key (kbd "M-g s") 'ispell-buffer)
+(global-set-key (kbd "M-g n") 'open-netctl-mode)
 
 (require 'bind-key)
 (bind-key* "<C-tab>" 'other-window)
@@ -57,6 +58,31 @@
 (defun other-window-backward ()
   (interactive)
   (other-window -1))
+
+(defvar backlight-driver "amdgpu_bl0"
+  "the name of the backlight driver")
+
+(defun backlight-curr ()
+  (string-to-number
+   (shell-command-to-string
+    (format "cat /sys/class/backlight/%s/brightness"
+            backlight-driver))))
+
+(defun backlight-down ()
+  (interactive)
+  (let ((target (- (backlight-curr) 5)))
+    (shell-command-to-string
+     (format "echo %s > /sys/class/backlight/%s/brightness"
+             target
+             backlight-driver))))
+
+(defun backlight-up ()
+  (interactive)
+  (let ((target (+ (backlight-curr) 5)))
+    (shell-command-to-string
+     (format "echo %s > /sys/class/backlight/%s/brightness"
+             target
+             backlight-driver))))
 
 (defun exwm-workspace-next ()
   (interactive)
@@ -102,10 +128,8 @@
                           (lambda ()
                             (interactive)
                             (start-process-shell-command "pactl" nil "pactl set-source-mute 1 toggle")))
-      (exwm-input-set-key (kbd "<s-f12>")
-                          (lambda ()
-                            (interactive)
-                            (start-process-shell-command "systemctl" nil "systemctl suspend")))
+      (exwm-input-set-key (kbd "<XF86MonBrightnessDown>") 'backlight-down)
+      (exwm-input-set-key (kbd "<XF86MonBrightnessUp>") 'backlight-up)
       (exwm-input-set-key (kbd "s-`") 'exwm-workspace-switch-to-buffer)
       (exwm-input-set-key (kbd "s-=") 'exwm-workspace-move-window)
 
@@ -170,6 +194,9 @@
             (local-set-key (kbd "M-.") 'godef-jump)
             (local-set-key (kbd "M-*") 'pop-tag-mark)))
 
+
+(require 'netctl-mode)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -196,14 +223,14 @@
  '(package-archives
    (quote
     (("gnu" . "http://elpa.gnu.org/packages/")
-     ("melpa-stable" . "https://stable.melpa.org/packages/")
-     ("marmalade" . "https://marmalade-repo.org/packages/"))))
+     ("melpa-stable" . "https://stable.melpa.org/packages/"))))
  '(package-selected-packages
    (quote
     (dockerfile-mode yaml-mode go-dlv bind-key exwm go-mode markdown-mode solarized-theme exec-path-from-shell magit)))
  '(pop-up-windows nil)
  '(python-indent-offset 2)
  '(scroll-preserve-screen-position t)
+ '(send-mail-function (quote mailclient-send-it))
  '(show-paren-mode t)
  '(standard-indent 2)
  '(tab-width 2)
