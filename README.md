@@ -30,5 +30,11 @@ In split mode, the displays are assumed to be stacked one above the other, with 
 
 Note that there is sometimes some odd behaviour with EXWM, where s- key bindings don't always work with X buffers; s-tab seems reliable, so a work around is to s-tab to, say, *GNU Emacs*, move the workspace to the desired display and then s-tab back to the X application.
 
+## netctl front end
+lisp/netctl-mode.el provides a simple front end to netctl to display the current network status and start / stop / switch networks.
+
+## Notifications
+lisp/org-freedesktop-notifications-server.el provides a trivial implementation of the org.freedesktop.Notifications interface to display notifications in the emacs mini-buffer. Previous messages can be seen in the *Messages* buffer.
+
 ## TODO
 There's far too much stuff in init.el itself.
