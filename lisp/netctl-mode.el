@@ -31,7 +31,8 @@
 
 (defun netctl-mode-update-display (list)
   (let ((buffer-read-only nil)
-        (cur-point (point)))
+        (cur-point (point))
+        (profile-pos 0))
     (erase-buffer)
     (goto-char (point-min))
     (dolist (entry (netctl-keymap))
@@ -43,15 +44,18 @@
     (insert list)
     (setq netctl-mode-list-end (point))
     (insert "\n\n-------------------------\nNetwork Profile Status:\n\n")
-    (if (string-match "\\*\\(.*\\).*" list 0)
-        (let ((profile-name (match-string 1 list)))
-          (insert (shell-command-to-string
-                   (format "netctl status %s"
-                           profile-name))))
-      (if (string-match "\\+\\(.*\\).*" list 0)
-          (let ((profile-name (match-string 1 list)))
-            (insert (format "connecting to %s ..." profile-name)))
-        (insert (format "%s" netctl-mode-last-msg))))
+    (while (string-match "\\*\\(.*\\).*" list profile-pos)
+      (let ((profile-name (match-string 1 list)))
+        (insert (shell-command-to-string
+                 (format "netctl status %s"
+                         profile-name))))
+      (setq profile-pos (match-end 0)))
+    (setq profile-pos 0)
+    (while (string-match "\\+\\(.*\\).*" list profile-pos)
+      (let ((profile-name (match-string 1 list)))
+        (insert (format "connecting to %s ..." profile-name)))
+      (insert (format "%s" netctl-mode-last-msg))
+      (setq profile-pos (match-end 0)))
     (goto-char cur-point)))
 
 (defun netctl-mode-do-cmd (cmd profile-name)
