@@ -27,6 +27,8 @@
 (global-set-key (kbd "M-g m") 'magit-status)
 (global-set-key (kbd "M-g s") 'ispell-buffer)
 (global-set-key (kbd "M-g n") 'open-netctl-mode)
+(global-set-key (kbd "M-g e") 'mu4e)
+(global-set-key (kbd "M-g t") 'bluetooth-list-devices)
 
 (require 'bind-key)
 (bind-key* "<C-tab>" 'other-window)
@@ -42,18 +44,12 @@
 
 (load "c-style-ian")
 (setq c-default-style
-      '((java-mode . "java")
-        (awk-mode . "awk")
+      '((awk-mode . "awk")
         (other . "ian")))
-
-;; sadly I sometimes have to edit java
-(add-hook 'java-mode-hook
-          (lambda ()
-            (setq c-basic-offset 4
-                  tab-width 4)))
 
 (server-start)
 (cua-mode)
+;;(pdf-tools-install)
 
 (defun other-window-backward ()
   (interactive)
@@ -141,8 +137,8 @@
 
       (defvar exwm-workspace-window-assignments
         '(("Firefox" . 3)
-          ("Thunderbird" . 4)
-          ("Slack" . 5))
+          ("Slack" . 5)
+          ("Zoom" . 6))
         "An alist of window classes and which workspace to put them on.")
 
       (add-hook 'exwm-manage-finish-hook
@@ -194,6 +190,25 @@
             (local-set-key (kbd "M-.") 'godef-jump)
             (local-set-key (kbd "M-*") 'pop-tag-mark)))
 
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
+(require 'mu4e)
+(setq shr-color-visible-luminance-min 80) ;; make html mail readable!
+(setq mail-user-agent 'mu4e-user-agent)
+(setq
+   mu4e-get-mail-command "fdm fetch"
+   mu4e-update-interval 900
+   mu4e-attachment-dir "~/Downloads"
+   mu4e-view-show-images t
+   message-send-mail-function   'smtpmail-send-it
+   smtpmail-default-smtp-server "mail3.gridhost.co.uk"
+   smtpmail-smtp-server         "mail3.gridhost.co.uk"
+   smtpmail-local-domain        "lihb.me.uk"
+   smtpmail-stream-type  'ssl
+   smtpmail-smtp-service 465
+   user-full-name "Ian Wakeling"
+   user-mail-address (concat "ian@" smtpmail-local-domain))
+(mu4e)
+;;(exwm-workspace-move-window 4)
 
 (require 'netctl-mode)
 
@@ -204,14 +219,14 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector
    ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
+ '(auth-source-save-behavior nil)
  '(battery-mode-line-format " [%B %t rem] ")
  '(c-basic-offset 2)
  '(column-number-mode t)
  '(custom-buffer-indent 2)
- '(custom-enabled-themes (quote (wombat)))
+ '(custom-enabled-themes '(wombat))
  '(custom-safe-themes
-   (quote
-    ("1d9401cbf6d663adc797e83917b1a3d1cf916990acb75d11679546bc7dfd9153" "31086c59cd60bef4d9ea4997caa79ade74139abe92b05c2cc30095bb62150189" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+   '("1d9401cbf6d663adc797e83917b1a3d1cf916990acb75d11679546bc7dfd9153" "31086c59cd60bef4d9ea4997caa79ade74139abe92b05c2cc30095bb62150189" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default))
  '(delete-selection-mode t)
  '(display-battery-mode t)
  '(display-time-mode t)
@@ -219,18 +234,16 @@
  '(indent-tabs-mode nil)
  '(js-indent-level 2)
  '(latex-run-command "pdflatex")
- '(org-support-shift-select (quote always))
+ '(org-support-shift-select 'always)
  '(package-archives
-   (quote
-    (("gnu" . "http://elpa.gnu.org/packages/")
-     ("melpa-stable" . "https://stable.melpa.org/packages/"))))
+   '(("gnu" . "http://elpa.gnu.org/packages/")
+     ("melpa-stable" . "https://stable.melpa.org/packages/")))
  '(package-selected-packages
-   (quote
-    (dockerfile-mode yaml-mode go-dlv bind-key exwm go-mode markdown-mode solarized-theme exec-path-from-shell magit)))
+   '(bluetooth pdf-tools dockerfile-mode yaml-mode go-dlv bind-key exwm go-mode markdown-mode solarized-theme exec-path-from-shell magit))
  '(pop-up-windows nil)
  '(python-indent-offset 2)
  '(scroll-preserve-screen-position t)
- '(send-mail-function (quote mailclient-send-it))
+ '(send-mail-function 'mailclient-send-it)
  '(show-paren-mode t)
  '(standard-indent 2)
  '(tab-width 2)
